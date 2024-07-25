@@ -1,0 +1,6 @@
+user-agent: *
+allow: /
+disallow: /components
+disallow: /css
+disallow: /data
+disallow: /icons

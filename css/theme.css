@@ -1,0 +1,146 @@
+@font-face {
+  font-family: "SF Pro Display";
+  src: url('https://early-fox-61.deno.dev/sf-pro-display_regular.woff2') format('woff2');
+  font-weight: normal;
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: url('https://early-fox-61.deno.dev/sf-pro-display_bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: "SF Pro Text";
+  src: url('https://early-fox-61.deno.dev/sf-pro-text_light.woff2') format('woff2');
+  font-weight: 300;
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: "SF Pro Text";
+  src: url('https://early-fox-61.deno.dev/sf-pro-text_regular.woff2') format('woff2-variations');
+  font-weight: 100 1000;
+  font-stretch: 25% 151%;
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: "SF Pro Text";
+  src: url('https://early-fox-61.deno.dev/sf-pro-text_bold.woff2') format('woff2');
+  font-weight: bold;
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: "SF Mono";
+  src: url('https://early-fox-61.deno.dev/sf-mono_regular.woff') format('woff');
+  font-weight: normal;
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: "SF Mono";
+  src: url('https://early-fox-61.deno.dev/sf-mono_bold.woff') format('woff');
+  font-weight: bold;
+  font-display: fallback;
+}
+
+:root {
+  --type-mono: "SF Mono", monospace;
+  --type-display: "SF Pro Display", sans-serif;
+  --type-body: "SF Pro Text", sans-serif;
+  --background-color: 255, 247, 128;
+  --text-color: 0, 0, 0;
+  --border-radius: 4px;
+  --text-decoration-color: 0, 208, 193;
+  --pale-yellow: rgb(255 247 128);
+}
+
+/* Hyperlinks: LVFHA */
+a, a:link, a:visited, a:hover, a:active {
+  text-decoration: none;
+  color: rgb(var(--text-color));
+}
+
+a:visited {
+  color: rgb(var(--text-color));
+}
+
+a:hover, a:active {
+  color: deeppink;
+}
+
+/* headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--type-display);
+  font-size: var(--font-size-body);
+}
+
+h2, h3, h4, h5, h6 {
+  margin-bottom: var(--line-height-body);
+}
+
+/* p */
+p {
+  max-width: none;
+}
+
+/* buttons */
+button, input[type="button"], a.button {
+  --button-color: 255,255,255;
+  color: rgba(0, 0, 0, 0.7);
+  align-items: center;
+  margin-bottom: 0.5em;
+  padding-bottom: 2px;
+  font-variant: all-small-caps;
+  text-transform: lowercase;
+  text-decoration: none;
+  gap: 4px;
+}
+
+a.button:visited {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+@media screen and (max-width: 60em) {
+  button, input[type="button"], a.button {
+    height: calc(1.5 * var(--line-height-body));
+  }
+}
+
+/* icons */
+.symbol {
+  width: var(--font-size-body);
+  max-height: var(--font-size-body);
+  padding-top: 2px;
+}
+
+/* header h1 */
+header h1 a {
+  font-style: italic;
+  text-shadow:
+  -1px -1px 0 #000,
+   1px -1px 0 #000,
+   -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+header h1 a, header h1 a:link, header h1 a:visited, header h1 a:hover, header h1 a:active {
+  color: rgb(var(--background-color));
+}
+
+header h1 a:visited {
+  color: rgb(var(--background-color));
+}
+
+header h1 a:hover, header h1 a:active {
+  color: white;
+}
+
+/* progress */
+progress {
+  accent-color: rgb(90 110 220);
+}

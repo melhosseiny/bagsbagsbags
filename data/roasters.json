@@ -1,0 +1,20 @@
+[
+  {
+    "id": 0,
+    "name": "Tim Wendelboe",
+    "country": "no",
+    "url": "https://timwendelboe.no"
+  },
+  {
+    "id": 1,
+    "name": "Coffee Collective",
+    "country": "dk",
+    "url": "https://coffeecollective.dk"
+  },
+  {
+    "id": 2,
+    "name": "Fuglen Oslo",
+    "country": "no",
+    "url": "https://www.fuglencoffee.no"
+  }
+]

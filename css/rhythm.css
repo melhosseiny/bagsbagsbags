@@ -1,0 +1,40 @@
+html, pre, p code, small {
+  font-size: 14px;
+}
+
+:root {
+  --line-height-h1:0.6190476190476191em;
+  --line-height-h2: 0.7878787878787878em;
+  --line-height-h3: 1em;
+  --line-height-body: 1.3em;
+  --font-size-body: 1.25rem;
+}
+
+h1 {
+  font-size: 2.625rem;
+  line-height: 1.2380952380952381;
+} /*42px*/
+
+h2 {
+  font-size: 2.0625rem;
+  line-height: 0.7878787878787878;
+} /*33px*/
+
+h3 {
+  font-size: 1.625rem;
+  line-height: 1;
+} /*26px*/
+
+body, .type--body, p, h4, h5, h6, button, input[type="button"] {
+  font-size: 1.25rem;
+  line-height: 1.3;
+} /*20px*/
+
+p, blockquote {
+  margin-bottom: 1.3em;
+}
+
+.type--body {
+  font-family: var(--type-body);
+  font-weight: 400;
+}

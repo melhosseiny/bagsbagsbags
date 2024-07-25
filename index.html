@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2">
+    <meta name="author" content="Mostafa Elshamy">
+    <meta name="description" content="Coffee bag market">
+    <meta property="og:url" content="https://bagsbagsbags.deno.dev">
+    <meta property="og:title" content="Mostafa Elshamy">
+    <meta property="og:description" content="Coffee bag market">
+    <meta property="og:image" content="/icons/og-image.png">
+    <title>bagsbagsbags</title>
+    <link rel="preconnect" href="https://busy-dog-44.deno.dev">
+    <link rel="preconnect" href="https://early-fox-61.deno.dev">
+    <link rel="preload" href="https://early-fox-61.deno.dev/sf-pro-text_regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://early-fox-61.deno.dev/sf-mono_regular.woff" as="font" type="font/woff" crossorigin>
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="stylesheet" href="https://busy-dog-44.deno.dev/melhosseiny/aurora/main/src/typography/type.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/rhythm.css">
+    <link rel="stylesheet" href="https://busy-dog-44.deno.dev/melhosseiny/aurora/main/src/button/button.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <script type="module">
+      import { set_shared_style_sheets } from "https://busy-dog-44.deno.dev/melhosseiny/sourdough/main/sourdough.js";
+      const document_style_sheets = [...document.styleSheets].slice(0,5);
+      set_shared_style_sheets(document_style_sheets);
+    </script>
+  </head>
+  <body>
+    <ad-progress id="progress"></ad-progress>
+    <ad-toast id="toast"></ad-toast>
+    <header id="header">
+      <h1><a href="/">bagsbagsbags</a></h1>
+    </header>
+    <main id="main"></main>
+    <script type="module">
+      import { get_constructed_style_sheet } from "https://busy-dog-44.deno.dev/melhosseiny/sourdough/main/sourdough.js";
+
+      const document_style_sheets = [...document.styleSheets].slice(0,5);
+
+      let document_constructed_sheets;
+      try {
+        document_constructed_sheets = document_style_sheets.map(get_constructed_style_sheet);
+      } catch (error) {}
+
+      import "/components/app.js";
+      import "/components/market.js";
+      import "/components/sorry.js";
+      import "/components/empty.js";
+
+      import { progress } from "https://busy-dog-44.deno.dev/melhosseiny/aurora/main/src/progress/progress.js";
+      import { toast } from "https://busy-dog-44.deno.dev/melhosseiny/aurora/main/src/toast/toast.js";
+      import { card } from "https://busy-dog-44.deno.dev/melhosseiny/aurora/main/src/card/card.js";
+
+      try {
+        ["bbb-market", "bbb-sorry", "bbb-empty", "ad-progress", "ad-toast", "ad-card"].forEach(element => {
+          if (document.querySelector(element)) {
+            document.querySelector(element).component.adopt_styles(document_constructed_sheets);
+          }
+        });
+      } catch (error) {}
+    </script>
+  </body>
+</html>
+
