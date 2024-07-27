@@ -3,6 +3,8 @@ import * as base64 from "https://deno.land/std@0.170.0/encoding/base64.ts";
 import { content_type } from "media_types";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { load } from "https://deno.land/std@0.224.0/dotenv/mod.ts";
+import { sync_bags } from "./mod_sync.js";
+import { index_bags } from "./mod_index.js";
 
 const env = await load();
 
@@ -148,12 +150,12 @@ serve(async (request) => {
   } else {
     try {
       response_body = static_path.some(prefix => pathname.startsWith(prefix))
-//        ? await Deno.readFile(`.${pathname}`)
-        ? (await fetch(new URL(PATHNAME_PREFIX + pathname, "https://raw.githubusercontent.com/"), {
-          headers: {
-            "Authorization": `token ${Deno.env.get("GITHUB_ACCESS_TOKEN")}`,
-          },
-        })).body
+        ? await Deno.readFile(`.${pathname}`)
+//        ? (await fetch(new URL(PATHNAME_PREFIX + pathname, "https://raw.githubusercontent.com/"), {
+//          headers: {
+//            "Authorization": `token ${Deno.env.get("GITHUB_ACCESS_TOKEN")}`,
+//          },
+//        })).body
         : await Deno.readFile(`./index_inline.html`);
     } catch (e) {
       response_status = 404;
@@ -169,4 +171,10 @@ serve(async (request) => {
       "cache-control": "no-cache"
     })
   });
+});
+
+// Run every day at 1am
+Deno.cron("sync and index", "0 1 * * *", async () => {
+  await sync_bags();
+  await index_bags();
 });
