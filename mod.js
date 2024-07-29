@@ -173,12 +173,12 @@ serve(async (request) => {
   });
 });
 
-//const cron = async () => {
-//  await sync_bags();
-//  await index_bags();
-//}
-//
-//await cron();
+const cron = async () => {
+  await sync_bags();
+  await index_bags();
+}
+
+await cron();
 
 //Deno.cron("Run every five minutes", "*/5 * * * *", async () => {
 //  await sync_bags();
