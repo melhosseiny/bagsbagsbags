@@ -1,4 +1,5 @@
 import roasters from "./data/roasters.json" with { type: "json" };
+import { write_file } from "./mod_tw.js";
 
 const to_slug = (name) => name.toLowerCase()
   .replace(/[^\w ]+/g, "")
@@ -23,7 +24,7 @@ export async function index_bags() {
   }
   
   console.log(index.flat(1));
-  await Deno.writeTextFile("data/coffees_index.json", JSON.stringify(index.flat(1)));
+  await write_file("data/coffees_index.json", JSON.stringify(index.flat(1)));
 }
 
 if (import.meta.main) {

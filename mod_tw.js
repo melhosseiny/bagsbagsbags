@@ -1,3 +1,4 @@
+import * as base64 from "https://deno.land/std@0.170.0/encoding/base64.ts";
 import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 import { parse } from "https://deno.land/x/xml@4.0.0/mod.ts";
 
@@ -67,6 +68,36 @@ export async function sync_tw() {
   };
   
   console.log(coffees);
-  await Deno.writeTextFile("data/coffees_0.json", JSON.stringify(coffees));
+  await write_file("data/coffees_0.json", JSON.stringify(coffees));
   console.log("Synced with tim wendelboe.");
+}
+
+export const write_file = async (path, contents) => {
+  try {
+    const file_res = await (await fetch(`https://api.github.com/repos/melhosseiny/bagsbagsbags/contents/${path}`, {
+      method: "GET",
+      headers: {
+        "Accept": "application/vnd.github+json",
+        "Authorization": `Bearer ${Deno.env.get('GITHUB_ACCESS_TOKEN')}`,
+        "X-GitHub-Api-Version": "2022-11-28"
+      },
+      cache: "no-store",
+    })).json();
+    const sha = file_res.sha;
+    const response = await fetch(`https://api.github.com/repos/melhosseiny/bagsbagsbags/contents/${path}`, {
+      method: "PUT",
+      headers: {
+        "Accept": "application/vnd.github+json",
+        "Authorization": `Bearer ${Deno.env.get('GITHUB_ACCESS_TOKEN')}`,
+        "X-GitHub-Api-Version": "2022-11-28"
+      },
+      body: JSON.stringify({
+        message: `write ${path}`,
+        content: base64.encode((JSON.stringify(contents))),
+        sha
+      })
+    });
+  } catch (error) {
+    console.error(error);
+  }
 }

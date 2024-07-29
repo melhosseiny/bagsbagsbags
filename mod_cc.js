@@ -1,4 +1,5 @@
 import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
+import { write_file } from "./mod_tw.js";
 
 const parser = new DOMParser();
 
@@ -59,6 +60,6 @@ export async function sync_cc() {
   };
   
   console.log(coffees);
-  await Deno.writeTextFile("data/coffees_1.json", JSON.stringify(coffees));
+  await Deno.write_file("data/coffees_1.json", JSON.stringify(coffees));
   console.log("Synced with coffee collective.");
 }

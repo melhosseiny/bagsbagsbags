@@ -1,5 +1,6 @@
 import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 import { parse } from "https://deno.land/x/xml@4.0.0/mod.ts";
+import { write_file } from "./mod_tw.js";
 
 const parser = new DOMParser();
 const currency_xml = await( await fetch("https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml")).text();
@@ -76,6 +77,6 @@ export async function sync_fuglen() {
   };
   
   console.log(coffees);
-  await Deno.writeTextFile("data/coffees_2.json", JSON.stringify(coffees));
+  await write_file("data/coffees_2.json", JSON.stringify(coffees));
   console.log("Synced with fuglen.");
 }
