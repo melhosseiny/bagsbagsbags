@@ -3,6 +3,7 @@ import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 const parser = new DOMParser();
 
 const to_slug = (name) => name.toLowerCase()
+  .replace(/ - .+/g, "")
   .replace(/[^\w ]+/g, "")
   .replace(/ +/g, "-");
 
@@ -30,6 +31,7 @@ export async function sync_cc() {
   let coffees = [];
   
   for (const [index, value] of cc_products_coffees_links.entries()) {
+    console.log("debug", index, value);
     const cc_coffee_json = JSON.parse(await (await fetch(value.link)).text());
     const data = cc_coffee_json.result.data.datoCmsFilterCoffee || cc_coffee_json.result.data.datoCmsEspresso;
     

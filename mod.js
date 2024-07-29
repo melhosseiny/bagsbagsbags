@@ -150,12 +150,12 @@ serve(async (request) => {
   } else {
     try {
       response_body = static_path.some(prefix => pathname.startsWith(prefix))
-        ? await Deno.readFile(`.${pathname}`)
-//        ? (await fetch(new URL(PATHNAME_PREFIX + pathname, "https://raw.githubusercontent.com/"), {
-//          headers: {
-//            "Authorization": `token ${Deno.env.get("GITHUB_ACCESS_TOKEN")}`,
-//          },
-//        })).body
+//        ? await Deno.readFile(`.${pathname}`)
+        ? (await fetch(new URL(PATHNAME_PREFIX + pathname, "https://raw.githubusercontent.com/"), {
+          headers: {
+            "Authorization": `token ${Deno.env.get("GITHUB_ACCESS_TOKEN")}`,
+          },
+        })).body
         : await Deno.readFile(`./index_inline.html`);
     } catch (e) {
       response_status = 404;
@@ -171,6 +171,11 @@ serve(async (request) => {
       "cache-control": "no-cache"
     })
   });
+});
+
+Deno.cron("Run every five minutes", "*/5 * * * *", async () => {
+  await sync_bags();
+  await index_bags();
 });
 
 // Run every day at 1am
