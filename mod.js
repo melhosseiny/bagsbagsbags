@@ -173,10 +173,17 @@ serve(async (request) => {
   });
 });
 
-Deno.cron("Run every five minutes", "*/5 * * * *", async () => {
+const cron = async () => {
   await sync_bags();
   await index_bags();
-});
+}
+
+await cron();
+
+//Deno.cron("Run every five minutes", "*/5 * * * *", async () => {
+//  await sync_bags();
+//  await index_bags();
+//});
 
 // Run every day at 1am
 Deno.cron("sync and index", "0 1 * * *", async () => {
