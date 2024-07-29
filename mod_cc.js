@@ -60,6 +60,6 @@ export async function sync_cc() {
   };
   
   console.log(coffees);
-  await Deno.write_file("data/coffees_1.json", JSON.stringify(coffees));
+  await write_file("data/coffees_1.json", JSON.stringify(coffees));
   console.log("Synced with coffee collective.");
 }
