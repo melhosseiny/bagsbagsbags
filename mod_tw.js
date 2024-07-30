@@ -93,7 +93,7 @@ export const write_file = async (path, contents) => {
       },
       body: JSON.stringify({
         message: `write ${path}`,
-        content: base64.encode((JSON.stringify(contents))),
+        content: base64.encode(contents),
         sha
       })
     });

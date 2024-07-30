@@ -180,13 +180,13 @@ serve(async (request) => {
 //
 //await cron();
 
-//Deno.cron("Run every ten minutes", "*/10 * * * *", async () => {
-//  await sync_bags();
-//  await index_bags();
-//});
-//
-//// Run every day at 1am
-//Deno.cron("sync and index", "0 1 * * *", async () => {
-//  await sync_bags();
-//  await index_bags();
-//});
+Deno.cron("Run every ten minutes", "*/10 * * * *", async () => {
+  await sync_bags();
+  await index_bags();
+});
+
+// Run every day at 1am
+Deno.cron("sync and index", "0 1 * * *", async () => {
+  await sync_bags();
+  await index_bags();
+});

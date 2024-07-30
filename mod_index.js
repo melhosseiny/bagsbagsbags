@@ -10,6 +10,7 @@ export async function index_bags() {
   
   for (const roaster of roasters) {
     let roaster_coffees = JSON.parse(await Deno.readTextFile(`data/coffees_${roaster.id}.json`));
+    console.log(typeof roaster_coffees);
     roaster_coffees = roaster_coffees.map(coffee => {
       return {
         ...coffee,
