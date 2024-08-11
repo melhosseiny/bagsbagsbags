@@ -143,6 +143,6 @@ serve(async (request) => {
 //});
 
 // Run every day at 1am
-//Deno.cron("sync and index", "0 1 * * *", async () => {
-//  await index_bags();
-//});
+Deno.cron("sync and index", "0 1 * * *", async () => {
+  await index_bags();
+});
