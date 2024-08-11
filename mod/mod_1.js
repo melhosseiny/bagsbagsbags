@@ -1,5 +1,5 @@
 import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
-import { write_file } from "./mod_tw.js";
+import { gemini } from "./mod_ai.js";
 
 const parser = new DOMParser();
 
@@ -8,8 +8,10 @@ const to_slug = (name) => name.toLowerCase()
   .replace(/[^\w ]+/g, "")
   .replace(/ +/g, "-");
 
-const capitalize = (string) =>
-  string.charAt(0).toUpperCase() + string.slice(1);
+const to_title_case = function(s) {
+  return s.replace(/-/g, ' ')[0].toUpperCase() +
+    s.replace(/-/g, ' ').substr(1).toLowerCase();
+}
 
 // coffeecollective
 export async function sync_cc() {
@@ -35,23 +37,25 @@ export async function sync_cc() {
     console.log("debug", index, value);
     const cc_coffee_json = JSON.parse(await (await fetch(value.link)).text());
     const data = cc_coffee_json.result.data.datoCmsFilterCoffee || cc_coffee_json.result.data.datoCmsEspresso;
+
+    const notes = to_title_case(await gemini(`Extract three flavor notes from ${data.description}. Format reply like "Blackcurrant, redcurrant, plum" without any additional tokens.`)).replace(" \n", '');
     
     const cc_coffee_attr = {
-    name: data.name,
-    price: Number(JSON.parse(data.variations[0].price).USD),
-    cultivar: data.details[0].varieties,
-    notes: capitalize(data.description.split('of')[1].trim()),
-    producer: data.farmer?.name,
-    farm: data.origin[0]?.farm,
-    region: data.origin[0]?.region,
-    country: data.origin[0]?.country,
-    process: data.details[0].process,
-    harvest: data.details[0].harvestCalendar,
-    altitude: Number(data.details[0].altitude.replace('masl','').replace(',','').trim()),
-    blend: data.details[0].blend,
-    roast: cc_coffee_json.result.data.datoCmsFilterCoffee ? "light" : "espresso",
-    size: data.variations[0].weight * 1000,
-    link: `https://coffeecollective.dk/shop/${to_slug(value.name)}`
+      name: data.name,
+      price: Number(JSON.parse(data.variations[0].price).USD),
+      cultivar: data.details[0].varieties,
+      notes,
+      producer: data.farmer?.name,
+      farm: data.origin[0]?.farm,
+      region: data.origin[0]?.region,
+      country: data.origin[0]?.country,
+      process: data.details[0].process,
+      harvest: data.details[0].harvestCalendar,
+      altitude: Number(data.details[0].altitude.replace('masl','').replace(',','').trim()),
+      blend: data.details[0].blend,
+      roast: cc_coffee_json.result.data.datoCmsFilterCoffee ? "light" : "espresso",
+      size: data.variations[0].weight * 1000,
+      link: `https://coffeecollective.dk/shop/${to_slug(value.name)}`
     };
     
     console.log(cc_coffee_attr);
@@ -60,6 +64,7 @@ export async function sync_cc() {
   };
   
   console.log(coffees);
-  await write_file("data/coffees_1.json", JSON.stringify(coffees));
+  // await write_file("data/coffees_1.json", JSON.stringify(coffees));
   console.log("Synced with coffee collective.");
+  return coffees;
 }

@@ -10,6 +10,8 @@ const rates = Object.fromEntries(currency_json["gesmes:Envelope"].Cube.Cube.Cube
 const nok_to_usd = (price_in_nok) => price_in_nok * (rates.USD / rates.NOK);
 console.log(nok_to_usd(1));
 
+const round = num => Math.round((num + Number.EPSILON) * 100) / 100;
+
 // timwendelboe
 export async function sync_tw() {
   const tw_products_html = await (await fetch("https://timwendelboe.no/product-category/coffee/")).text();
@@ -44,7 +46,7 @@ export async function sync_tw() {
     
     const tw_coffee_attr = {
       name: tw_coffee_doc.querySelector(".product_title").textContent,
-      price: nok_to_usd(Number(tw_coffee_doc.querySelector(".price").textContent.replace('kr',''))),
+      price: round(nok_to_usd(Number(tw_coffee_doc.querySelector(".price").textContent.replace('kr','')))),
       cultivar: get_coffee_attr(tw_coffee_doc, "cultivar"),
       notes: get_coffee_attr(tw_coffee_doc, "flavour_description"),
       producer: get_coffee_attr(tw_coffee_doc, "manufacturer"),
@@ -66,38 +68,8 @@ export async function sync_tw() {
       coffees.push(tw_coffee_attr);
     }
   };
-  
   console.log(coffees);
-  await write_file("data/coffees_0.json", JSON.stringify(coffees));
+  // await write_file("data/coffees_0.json", JSON.stringify(coffees));
   console.log("Synced with tim wendelboe.");
-}
-
-export const write_file = async (path, contents) => {
-  try {
-    const file_res = await (await fetch(`https://api.github.com/repos/melhosseiny/bagsbagsbags/contents/${path}`, {
-      method: "GET",
-      headers: {
-        "Accept": "application/vnd.github+json",
-        "Authorization": `Bearer ${Deno.env.get('GITHUB_ACCESS_TOKEN')}`,
-        "X-GitHub-Api-Version": "2022-11-28"
-      },
-      cache: "no-store",
-    })).json();
-    const sha = file_res.sha;
-    const response = await fetch(`https://api.github.com/repos/melhosseiny/bagsbagsbags/contents/${path}`, {
-      method: "PUT",
-      headers: {
-        "Accept": "application/vnd.github+json",
-        "Authorization": `Bearer ${Deno.env.get('GITHUB_ACCESS_TOKEN')}`,
-        "X-GitHub-Api-Version": "2022-11-28"
-      },
-      body: JSON.stringify({
-        message: `write ${path}`,
-        content: base64.encode(contents),
-        sha
-      })
-    });
-  } catch (error) {
-    console.error(error);
-  }
+  return coffees;
 }

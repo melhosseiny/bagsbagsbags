@@ -26,7 +26,7 @@ const load_page = async function(page) {
     default:
       const title = `${to_title_case(page)} - bagsbagsbags`;
       document.title = title;
-      document.querySelector("#main").innerHTML = `<bbb-coffee id="${page}"></bbb-coffee>`;
+      document.querySelector("#main").innerHTML = `<bbb-empty></bbb-empty>`;
   }
 }
 

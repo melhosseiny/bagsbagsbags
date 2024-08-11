@@ -1,6 +1,5 @@
 import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 import { parse } from "https://deno.land/x/xml@4.0.0/mod.ts";
-import { write_file } from "./mod_tw.js";
 
 const parser = new DOMParser();
 const currency_xml = await( await fetch("https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml")).text();
@@ -9,6 +8,8 @@ const rates = Object.fromEntries(currency_json["gesmes:Envelope"].Cube.Cube.Cube
 
 const nok_to_usd = (price_in_nok) => price_in_nok * (rates.USD / rates.NOK);
 console.log(nok_to_usd(1));
+
+const round = num => Math.round((num + Number.EPSILON) * 100) / 100;
 
 const parse_altitude = (altitude_str) => {
   let altitude = altitude_str.replace("masl", '').replace("m.a.s.l.", '');
@@ -49,7 +50,7 @@ export async function sync_fuglen() {
     const desc_text = fuglen_coffee_doc.querySelector(".description").innerHTML.replaceAll('<br>','\n').trim();
     console.log(desc_text);
     const desc_text_doc = parser.parseFromString(desc_text, 'text/html');
-    const desc_text_2 = desc_text_doc.textContent;
+    const desc_text_2 = desc_text_doc.textContent.replaceAll(/ {2,}/g, ' ').replaceAll(/\n+/g, '\n').replaceAll(/: +\n+/g, ': ');
     console.log(desc_text_2);
     const desc = Object.fromEntries([...desc_text_2.split('\n')].map(d => d.trim()).filter(d => d.includes(':')).map(d => d.split(':')).map(d => [d[0].trim().toLowerCase().replace(' ', '_'), d[1].trim()]));
     
@@ -57,7 +58,7 @@ export async function sync_fuglen() {
     
     const fuglen_coffee_attr = {
       name: name.split('/')[0].trim(),
-      price: nok_to_usd(Number(fuglen_coffee_doc.querySelector(".money").textContent.replace('kr','').replace(',','.'))),
+      price: round(nok_to_usd(Number(fuglen_coffee_doc.querySelector(".money").textContent.replace('kr','').replace(',','.')))),
       cultivar: desc.varieties,
       notes: desc.flavour_profile,
       producer: desc.producer,
@@ -66,7 +67,7 @@ export async function sync_fuglen() {
       process: desc.process,
       harvest: desc.harvest,
       altitude: desc.altitude ? parse_altitude(desc.altitude) : desc.altitude,
-        //    roast: get_coffee_attr(tw_coffee_doc, "roast_profile"),
+      roast: name.toLowerCase().includes("espresso") ? "espresso" : "light",
       size: Number(name.split(' ')[name.split(' ').length - 1].replace('g','')),
       link: value.link
     };
@@ -77,6 +78,7 @@ export async function sync_fuglen() {
   };
   
   console.log(coffees);
-  await write_file("data/coffees_2.json", JSON.stringify(coffees));
+  // await write_file("data/coffees_2.json", JSON.stringify(coffees));
   console.log("Synced with fuglen.");
+  return coffees;
 }

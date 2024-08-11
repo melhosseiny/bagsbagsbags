@@ -20,11 +20,16 @@ body {
 main {
   display: flex;
   flex-direction: column;
-  flex: 1 1 auto;
+  flex: 1 0 auto;
   min-height: 0;
   box-sizing: border-box;
   align-items: center;
   justify-content: center;
+}
+
+main:has(bbb-empty) {
+  align-items: start;
+  justify-content: start;
 }
 
 @media screen and (max-width: 60em) {

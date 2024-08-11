@@ -13,7 +13,10 @@ const template = (data) => html`
       <path d="M0.991211 14.1553C1.5625 14.1553 2.00684 13.7061 2.00684 13.1494L2.00684 8.39844C2.00684 7.83691 1.5625 7.38281 0.991211 7.38281C0.43457 7.38281 0 7.83691 0 8.39844L0 13.1494C0 13.7061 0.43457 14.1553 0.991211 14.1553Z" fill="currentColor" fill-opacity="0.85"/>
      </g>
     </svg>
-    <p>Sorry, I can't find what you're looking for today.</p>
+    <div id="message">
+      <p>Uh-oh, Looks like our barista is taking a break. Please give it another try later.</p>
+      <p class="error" ref="error"><b>${data.status}</b> ${data["status-text"]}</p>
+    </div>
   </div>
 `
 
@@ -27,6 +30,17 @@ const style = `
     padding: 1em;
     margin-bottom: var(--line-height-body);
     height: calc(3 * var(--line-height-body));
+  }
+
+  #message {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .error {
+    color: white;
+    font-family: "SF Mono";
+    font-variant: all-small-caps;
   }
   
   .symbol {
@@ -47,11 +61,17 @@ export function sorry(spec) {
   const _state = _web_component.state;
 
   const init = () => {
+    console.log(spec);
+  }
+  
+  const set_error = (status, status_text) => {
+    _state.error = { status, status_text }
   }
 
   return Object.freeze({
     ..._web_component,
-    init
+    init,
+    set_error
   })
 }
 
@@ -59,5 +79,6 @@ define_component({
   name: "bbb-sorry",
   component: sorry,
   template,
-  style
+  style,
+  props: ["status", "status-text"]
 });

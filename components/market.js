@@ -17,11 +17,10 @@ const template = (data) => html`
     </div>
     <div id="market" ref="bags">
       ${ data.bags && data.bags.explanation ? `<p id="explanation">${data.bags.explanation}</p>` : '' }
+      <bbb-sorry status="200" status-text="ok"></bbb-sorry>
       <div class="items">
         ${ data.bags && data.bags.items
-          ? data.bags.items.map(bag =>`
-
-  <a href="${bag.link}" target="_blank">
+          ? data.bags.items.map(bag =>`<a href="${bag.link}" target="_blank">
             <ad-card class="bag">
               <p slot="text">
                 <span class="scene">
@@ -30,12 +29,12 @@ const template = (data) => html`
                       <span class="label" ${ bag.color ? `style="background: linear-gradient(to right, rgb(from ${bag.color[0]} r g b / 0.5), rgb(from ${bag.color[1]} r g b / 0.5), rgb(from ${bag.color[2]} r g b / 0.5));"` : ''}>
                         <span class="country">${bag.country ? bag.country : "Blend" }</span><br>
                         <span class="name">${bag.name}</span><br>
-                        <span class="roaster">${bag.roaster}</span>
+                        <span class="roaster">${bag.roaster.name}</span>
                       </span>
                       <span class="cultivar">${bag.process} ${bag.cultivar}</span>
                       <span class="notes">${bag.notes}</span>
                       <span class="size">${bag.size}g</span>
-                      <span class="price">$${bag.price.toFixed(2)}</span>
+                      <span class="price">$${bag.price.toFixed ? bag.price.toFixed(2) : bag.price}</span>
                     </span>
                     <span class="face back" ${bag.altitude ? (Array.isArray(bag.altitude) ? `style="--alt: ${(bag.altitude[0] + bag.altitude[1]) * 100 / 6000}%"` :  `style="--alt: ${bag.altitude * 100 / 3000}%"`) : ''}>
                       <span class="from">${bag.region ? bag.region : ''}</span>
@@ -49,7 +48,48 @@ const template = (data) => html`
                 </span>
               </p>
             </ad-card></a>`).join('')
-          : "<bbb-empty id='empty'></bbb-empty>"
+          : `<ad-card class="empty bag">
+              <p slot="text">
+                <span class="scene">
+                  <span class="cube">
+                    <span class="face front"></span>
+                    <span class="face back"></span>
+                    <span class="face right"></span>
+                    <span class="face left"></span>
+                    <span class="face top"></span>
+                    <span class="face bottom"></span>
+                  </span>
+                </span>
+              </p>
+            </ad-card>
+            <ad-card class="empty bag">
+              <p slot="text">
+                <span class="scene">
+                  <span class="cube">
+                    <span class="face front"></span>
+                    <span class="face back"></span>
+                    <span class="face right"></span>
+                    <span class="face left"></span>
+                    <span class="face top"></span>
+                    <span class="face bottom"></span>
+                  </span>
+                </span>
+              </p>
+            </ad-card>
+            <ad-card class="empty bag">
+              <p slot="text">
+                <span class="scene">
+                  <span class="cube">
+                    <span class="face front"></span>
+                    <span class="face back"></span>
+                    <span class="face right"></span>
+                    <span class="face left"></span>
+                    <span class="face top"></span>
+                    <span class="face bottom"></span>
+                  </span>
+                </span>
+              </p>
+            </ad-card>`
         }
       </div>
       ${ data.bags && data.bags.has_more
@@ -109,10 +149,30 @@ const style = `
     border-radius: 50%;
     width: calc(1.5 * var(--line-height-body));
     height: calc(1.5 * var(--line-height-body));
+    animation: none;
   }
 
-  #empty {
-    display: none;
+  #submit-btn.gemini {
+    animation: 3s infinite alternate gemini;
+  }
+
+  @keyframes gemini {
+    from {
+      color: oklch(75% .2 0);
+      transform: rotate(0deg);
+    }
+
+    15% { color: oklch(75% .2 50); }
+    30% { color: oklch(75% .2 100); }
+    45% { color: oklch(75% .2 150); }
+    60% { color: oklch(75% .2 200); }
+    75% { color: oklch(75% .2 250); }
+    90% { color: oklch(75% .2 300); }
+
+    to {
+      color: oklch(75% .2 360);
+      transform: rotate(360deg);
+    }
   }
 
   #more {
@@ -135,8 +195,16 @@ const style = `
     margin-bottom: 30px;
   }
 
-  #market .items:has(#empty) {
-    grid-template-columns: minmax(0, 1fr);
+  .empty.bag {
+    animation: pulse 1000ms linear infinite forwards;
+  }
+
+  #market .items .empty,  #market bbb-sorry  {
+    display: none;
+  }
+
+  #market .items.loading .empty, #market bbb-sorry.visible {
+    display: block;
   }
   
   @media screen and (max-width: 60em) {
@@ -218,7 +286,6 @@ const style = `
   .face.front .size {
     font-family: "SF Mono";
     font-variant: all-small-caps;
-    text-transform: uppercase;
     font-size: small;
     color: rgb(from black r g b / 0.5);
     position: absolute;
@@ -228,13 +295,19 @@ const style = `
   }
 
   .face.front .price {
+    font-family: "SF Mono";
+    font-variant: all-small-caps;
+    text-transform: uppercase;
+    font-size: small;
     position: absolute;
     top: 0;
     right: 0;
     transform: rotateZ(10deg) translateX(100%);
-    background-color: rgb(255 240 0);
+    background-color: transparent;
+    border: 1px solid black;
     border-radius: 4px;
     padding: 0 4px;
+
   }
 
   .face.back {
@@ -307,26 +380,12 @@ const style = `
 
   }
 
-  #buy-button {
-    display: flex;
-    --button-color: 255,255,255;
-    width: 200px;
-    margin-left: auto;
-    margin-right: auto;
+  @keyframes pulse {
+    0% { opacity: 0.75; }
+    50% { opacity: 1; }
+    100% { opacity: 0.75; }
   }
 `
-
-export const debounce = (func, delay = 0) => {
-  let timeout_id;
-
-  return function() {
-    clearTimeout(timeout_id);
-
-    timeout_id = setTimeout(() => {
-      func.apply(this, arguments);
-    }, delay);
-  }
-};
 
 export function market(spec) {
   let { _root } = spec;
@@ -340,6 +399,9 @@ export function market(spec) {
       const response = query
         ? await fetch(`/index.json?page_size=${PAGE_SIZE}&query=${query}`)
         : await fetch(`/index.json?page_size=${PAGE_SIZE}`);
+      if (!response.ok) {
+        throw { status: response.status, statusText: response.statusText };
+      }
       const text = await response.text();
       try {
         _state.bags = JSON.parse(text);
@@ -347,9 +409,14 @@ export function market(spec) {
         _state.bags = undefined;
       }
     } catch (error) {
+      _root.shadowRoot.querySelector("bbb-sorry")?.classList.toggle("visible");
+      _root.shadowRoot.querySelector("bbb-sorry")?.setAttribute("status", error.status);
+      _root.shadowRoot.querySelector("bbb-sorry")?.setAttribute("status-text", error.statusText);
+      _root.shadowRoot.querySelector("bbb-sorry")?.component.set_error(error.status, error.statusText);
       console.error(error);
     } finally {
       hide_loading();
+      window.history.pushState('{}', 'bagsbagsbags', query ? '/prompt' : '/');
     }
   }
   
@@ -377,25 +444,15 @@ export function market(spec) {
     fetch_bags(val);
   }
   
-  const update_bags_if_empty = () => {
-    const val = _root.shadowRoot.querySelector('#query').value;
-    if (val === '') {
-      fetch_bags(val);
-    }
-  }
-  
-  const debounced_update_bags = debounce(update_bags_if_empty, 300);
-
-//  const passive_form = (event) => {
-//    event.preventDefault();
-//  }
-  
   const show_loading = () => {
-    _root.shadowRoot.querySelector("#empty")?.setAttribute("style", "display: block;");
+    _root.shadowRoot.querySelector("#submit-btn")?.classList.toggle("gemini");
+    _root.shadowRoot.querySelector(".items")?.classList.toggle("loading");
   }
   
   const hide_loading = () => {
-    _root.shadowRoot.querySelector("#empty")?.setAttribute("style", "display: none;");
+    console.log("hide_loading");
+    _root.shadowRoot.querySelector("#submit-btn")?.classList.toggle("gemini");
+    _root.shadowRoot.querySelector(".items")?.classList.toggle("loading");
   }
   
   const submit_form = (event) => {
@@ -409,8 +466,6 @@ export function market(spec) {
   }
 
   const effects = () => {
-    _root.shadowRoot.querySelector('#query').addEventListener("input", debounced_update_bags);
-//    _root.shadowRoot.querySelector('#search_form').addEventListener("submit", passive_form);
     _root.shadowRoot.querySelector('#submit-btn').addEventListener("click", submit_form);
     const more_btn = _root.shadowRoot.querySelector('#more');
     if (more_btn) {
@@ -419,8 +474,6 @@ export function market(spec) {
   }
 
   const cleanup_effects = () => {
-    _root.shadowRoot.querySelector('#query').removeEventListener("input", debounced_update_bags);
-//    _root.shadowRoot.querySelector('#search_form').removeEventListener("submit", passive_form);
     _root.shadowRoot.querySelector('#submit-btn').removeEventListener("click", submit_form);
     const more_btn = _root.shadowRoot.querySelector('#more');
     if (more_btn) {

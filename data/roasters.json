@@ -16,5 +16,17 @@
     "name": "Fuglen Oslo",
     "country": "no",
     "url": "https://www.fuglencoffee.no"
+  },
+  {
+    "id": 3,
+    "name": "Sey",
+    "country": "us",
+    "url": "https://www.seycoffee.com"
+  },
+  {
+    "id": 4,
+    "name": "Langøra",
+    "country": "no",
+    "url": "https://www.langorakaffe.no"
   }
 ]

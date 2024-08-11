@@ -4,3 +4,4 @@ disallow: /components
 disallow: /css
 disallow: /data
 disallow: /icons
+disallow: /img
