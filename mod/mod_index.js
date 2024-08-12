@@ -1,3 +1,4 @@
+import * as base64 from "https://deno.land/std@0.170.0/encoding/base64.ts";
 import roasters from "../data/roasters.json" with { type: "json" };
 
 import { sync_tw } from "./mod_0.js";

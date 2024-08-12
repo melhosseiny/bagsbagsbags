@@ -1,4 +1,3 @@
-import * as base64 from "https://deno.land/std@0.170.0/encoding/base64.ts";
 import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 import { parse } from "https://deno.land/x/xml@4.0.0/mod.ts";
 
