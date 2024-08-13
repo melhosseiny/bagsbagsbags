@@ -68,7 +68,7 @@ export async function sync_langora() {
     const langora_coffee_attr = {
       name: value.name,
       price: round(nok_to_usd(Number(langora_coffee_doc.querySelector(".product-price").textContent.replace('fra','').replace('kr','').replace(',','.')))),
-      roast: name.toLowerCase().includes("espresso") ? "espresso" : "light",
+      roast: value.name.toLowerCase().includes("espresso") ? "espresso" : "light",
       link: value.link,
       ...meta_gemini_json
     };
