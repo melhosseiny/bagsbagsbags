@@ -126,7 +126,7 @@ const style = `
   
   #search_form input {
     font-size: var(--font-size-body);
-    width: calc(100vw - 4rem);
+    width: 100%;
     padding: 0;
     border: none;
     box-sizing: border-box;
@@ -147,7 +147,7 @@ const style = `
     color: white;
     margin-bottom: 0;
     border-radius: 50%;
-    width: calc(1.5 * var(--line-height-body));
+    min-width: calc(1.5 * var(--line-height-body));
     height: calc(1.5 * var(--line-height-body));
     animation: none;
   }
