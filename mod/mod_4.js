@@ -30,8 +30,12 @@ export async function sync_langora() {
   console.log(langora_product_coffees);
 
   const langora_product_coffees_links = langora_product_coffees.map(coffee => {
+    const name = coffee.querySelector(".grid-title").textContent;
+    const espresso = name.toLowerCase().includes("espresso");
+    const coffee_name = name.split(',')[0].trim();
+    
     return {
-      name: coffee.querySelector(".grid-title").textContent.split(',')[0].trim(),
+      name: espresso ? `${coffee_name} Espresso` : coffee_name,
       link: `https://www.langorakaffe.no${coffee.querySelector("a").getAttribute("href")}`
     }
   }).filter(coffee => {
@@ -44,6 +48,7 @@ export async function sync_langora() {
       && !lc_name.includes("test")
       && !lc_name.includes("tasting")
       && !lc_name.includes("trakterfilter")
+      && !lc_name.includes("bålkaffe")
   });;
   
   console.log(langora_product_coffees_links);
