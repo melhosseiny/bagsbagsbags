@@ -58,7 +58,7 @@ export async function index_bags() {
       return {
         ...coffee,
         roaster: { name: roaster.name, country: roaster.country },
-        id: to_slug(coffee.name)
+        id: crypto.randomUUID()
       }
     });
     

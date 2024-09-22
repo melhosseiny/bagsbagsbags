@@ -22,7 +22,7 @@ export async function sync_sey() {
   
   const sey_product_coffees_links = sey_product_coffees.map(coffee => {
     return {
-      name: coffee.querySelector(".coffeeTitle_producer").textContent,
+      name: coffee.querySelector(".coffeeTitle_producer").textContent.trim(),
       link: `https://www.seycoffee.com${coffee.querySelector("a").getAttribute("href")}`
     }
   });
@@ -48,7 +48,7 @@ export async function sync_sey() {
       producer: sey_coffee_doc.querySelector(".coffeeTitle_producer").textContent.trim(),
       country: sey_coffee_doc.querySelector(".coffeeTitle_country").textContent.trim(),
       region: sey_coffee_doc.querySelector(".coffee_technicalDetails_detail:nth-child(2) .coffee_technicalDetails_detail_description").textContent.trim(),
-      process: to_title_case(sey_coffee_doc.querySelector(".coffeeTitle_varietyProcess").textContent.split('-')[1].trim()),
+      process: to_title_case(sey_coffee_doc.querySelector(".coffeeTitle_varietyProcess").textContent.split(' - ')[1].trim()),
       harvest: sey_coffee_doc.querySelector(".coffee_technicalDetails_detail:nth-child(4) .coffee_technicalDetails_detail_description").textContent.trim(),
       roast: "light",
       size: Number(sey_coffee_doc.querySelector(".product-form__variants option").textContent.split('-')[0].replace('g','').trim()),
