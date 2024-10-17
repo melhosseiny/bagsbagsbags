@@ -26,7 +26,9 @@ export async function sync_tw() {
     }
   }).filter(coffee => {
     console.log(coffee.name, coffee.name.includes("Fizz"));
-    return !coffee.name.includes("Fizz") && !coffee.name.includes("Subscription")
+    return !coffee.name.includes("Fizz")
+      && !coffee.name.includes("Test")
+      && !coffee.name.includes("Subscription")
     
   });
   
