@@ -47,6 +47,7 @@
 
       import "/components/app.js";
       import "/components/market.js";
+      import "/components/summary.js";
       import "/components/sorry.js";
       import "/components/empty.js";
 
@@ -55,7 +56,7 @@
       import { card } from "https://busy-dog-44.deno.dev/melhosseiny/aurora/main/src/card/card.js";
 
       try {
-        ["bbb-market", "bbb-sorry", "bbb-empty", "ad-progress", "ad-toast", "ad-card"].forEach(element => {
+        ["bbb-market", "bbb-summary", "bbb-sorry", "bbb-empty", "ad-progress", "ad-toast", "ad-card"].forEach(element => {
           if (document.querySelector(element)) {
             document.querySelector(element).component.adopt_styles(document_constructed_sheets);
           }

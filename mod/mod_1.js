@@ -22,14 +22,19 @@ export async function sync_cc() {
   console.log(cc_products_coffees);
   
   const cc_products_coffees_links = cc_products_coffees.map(coffee => {
-    const name = coffee.querySelector(".e19cusw6").textContent.trim();
+    const name = coffee.querySelector(".e19cusw6").textContent.trim().replace("Julekaffe ", '');
     return {
       name: name,
       link: `https://coffeecollective.dk/page-data/shop/${to_slug(name)}/page-data.json`
     }
   }).filter(coffee => {
-    console.log(coffee.name, coffee.name.toLowerCase().includes("calendar"));
-    return !coffee.name.toLowerCase().includes("calendar");
+    console.log(
+      coffee.name,
+      coffee.name.toLowerCase().includes("calendar"),
+      !coffee.name.toLowerCase().includes("deal")
+    );
+    return !coffee.name.toLowerCase().includes("calendar")
+      && !coffee.name.toLowerCase().includes("deal");
   });
   
   console.log(cc_products_coffees_links);

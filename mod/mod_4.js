@@ -49,6 +49,8 @@ export async function sync_langora() {
       && !lc_name.includes("tasting")
       && !lc_name.includes("trakterfilter")
       && !lc_name.includes("bålkaffe")
+      && !lc_name.includes("drip bags")
+      && !lc_name.includes("coffee mug")
   });;
   
   console.log(langora_product_coffees_links);
@@ -64,7 +66,7 @@ export async function sync_langora() {
     const meta = langora_coffee_doc.querySelector(".ProductItem-details-excerpt").textContent.replaceAll(/\s{2,}/g, ' ').trim();
     const meta_additional = langora_coffee_doc.querySelector(".ProductItem-additional").textContent.replaceAll(/\s{2,}/g, ' ').trim();
     
-    const meta_gemini = await gemini(`Extract cultivar, process, flavor notes, producer, country, region, altitude and harves t date from "${meta} ${meta_additional}". Format answer as a JavaScript object { cultivar:, process:, notes:, producer:, country:, region:, altitude, harvest:, size: }. Extract only three flavor notes like "Stone fruit, clementine, apple.". Format altitude either as a Number like 1500 or a range like [1500, 1800]. Extract smallest size like 250 not "250g". Translate any norwegian text to english, don't keep the original. Don't include anything other than the JSON object. Don't wrap in code block.`);
+    const meta_gemini = await gemini(`Extract cultivar, process, flavor notes, producer, country, region, altitude and harvest date from "${meta} ${meta_additional}". Format answer as a JavaScript object { cultivar:, process:, notes:, producer:, country:, region:, altitude, harvest:, size: }. Extract only three flavor notes like "Stone fruit, clementine, apple.". Format altitude either as a Number like 1500 or a range like [1500, 1800]. Extract smallest size like 250 not "250g". Translate any norwegian text to english, don't keep the original. Your response should be a valid json object. Don't wrap in \`\`\`json code block.`);
     
     //console.log(meta_gemini);
     
@@ -72,7 +74,7 @@ export async function sync_langora() {
     
     const langora_coffee_attr = {
       name: value.name,
-      price: round(nok_to_usd(Number(langora_coffee_doc.querySelector(".product-price").textContent.replace('fra','').replace('kr','').replace(',','.')))),
+      price: round(nok_to_usd(Number(langora_coffee_doc.querySelector(".product-price").textContent.split('kr')[0].replace("Sale Price:",'').replace('fra','').replace(',','.')))),
       roast: value.name.toLowerCase().includes("espresso") ? "espresso" : "light",
       link: value.link,
       ...meta_gemini_json

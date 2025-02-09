@@ -64,6 +64,26 @@ const process_query = async (query, index_txt) => {
   return result;
 }
 
+const get_diff_summary = async () => {
+  const data_file_commits = await (await fetch("https://api.github.com/repos/melhosseiny/bagsbagsbags/commits?path=data/coffees_index.json", {
+    method: "GET",
+    headers: {
+      "Accept": "application/vnd.github+json",
+      "Authorization": `Bearer ${Deno.env.get('GITHUB_ACCESS_TOKEN')}`,
+      "X-GitHub-Api-Version": "2022-11-28"
+    },
+    cache: "no-store",
+  })).json();
+  const last_commit_sha = data_file_commits[0].sha
+//  const last_commit_sha = "8503bedb89cdd3d6b6aba3343ae6dc0fc5e5d2d9";
+  console.log(last_commit_sha);
+  const raw_diff = await( await fetch(`https://github.com/melhosseiny/bagsbagsbags/commit/${last_commit_sha}.diff`)).text()
+  console.log(raw_diff);
+  const result = await gemini(`Given the raw git diff ${raw_diff}, briefly list all new coffees. Id change doesn't mean it's a new coffee. Ignore other minor changes like price, process, and notes. Format answer as JSON { new_coffees: , summary: }. new_coffees should be an array of new coffee ids, while summary should very briefly highlight new coffees stating varietal, origin and roaster and be suitable for a social media post titled today's new coffees. Don't wrap in code block`, true)
+  console.log(result);
+  return result;
+}
+
 serve(async (request) => {
   let { pathname, searchParams } = new URL(request.url);
 
@@ -106,15 +126,22 @@ serve(async (request) => {
       response_status = error.status;
       console.error(error);
     }
+  } else if (pathname.endsWith("summary")) {
+    try {
+      response_body = await get_diff_summary();
+    } catch (error) {
+      response_status = error.status;
+      console.error(error);
+    }
   } else {
     try {
       response_body = static_path.some(prefix => pathname.startsWith(prefix))
 //      ? await Deno.readFile(`.${pathname}`)
-        ? (await fetch(new URL(PATHNAME_PREFIX + pathname, "https://raw.githubusercontent.com/"), {
-          headers: {
-            "Authorization": `token ${Deno.env.get("GITHUB_ACCESS_TOKEN")}`,
-          },
-        })).body
+      ? (await fetch(new URL(PATHNAME_PREFIX + pathname, "https://raw.githubusercontent.com/"), {
+        headers: {
+          "Authorization": `token ${Deno.env.get("GITHUB_ACCESS_TOKEN")}`,
+        },
+      })).body
       : await Deno.readFile(`./index_inline.html`);
     } catch (e) {
       response_status = 404;
@@ -131,16 +158,6 @@ serve(async (request) => {
     })
   });
 });
-
-//const cron = async () => {
-//  await index_bags();
-//}
-//
-//await cron();
-
-//Deno.cron("Run every ten minutes", "*/10 * * * *", async () => {
-//  await index_bags();
-//});
 
 // Run every day at 1am
 Deno.cron("sync and index", "0 1 * * *", async () => {

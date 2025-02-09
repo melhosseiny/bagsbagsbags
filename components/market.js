@@ -15,6 +15,7 @@ const template = (data) => html`
         </svg>
       </button>
     </div>
+    <bbb-summary></bbb-summary>
     <div id="market" ref="bags">
       ${ data.bags && data.bags.explanation ? `<p id="explanation">${data.bags.explanation}</p>` : '' }
       <bbb-sorry status="200" status-text="ok"></bbb-sorry>
