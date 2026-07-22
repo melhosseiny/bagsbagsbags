@@ -69,7 +69,7 @@ export async function index_bags() {
   
   console.log(index.flat(1));
 
-//  await Deno.writeTextFile("data/coffees_index.json", JSON.stringify(index.flat(1)));
+  //await Deno.writeTextFile("data/coffees_index_2.json", JSON.stringify(index.flat(1)));
   await write_file("data/coffees_index.json", JSON.stringify(index.flat(1)));
 }
 

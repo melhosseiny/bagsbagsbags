@@ -15,7 +15,7 @@ const template = (data) => html`
         </svg>
       </button>
     </div>
-    <bbb-summary></bbb-summary>
+    <!--bbb-summary></bbb-summary-->
     <div id="market" ref="bags">
       ${ data.bags && data.bags.explanation ? `<p id="explanation">${data.bags.explanation}</p>` : '' }
       <bbb-sorry status="200" status-text="ok"></bbb-sorry>
@@ -35,11 +35,27 @@ const template = (data) => html`
                       <span class="cultivar">${bag.process} ${bag.cultivar}</span>
                       <span class="notes">${bag.notes}</span>
                       <span class="size">${bag.size}g</span>
-                      <span class="price">$${bag.price.toFixed ? bag.price.toFixed(2) : bag.price}</span>
+                      <span class="price">${bag.priceCurrency}${bag.price.toFixed ? bag.price.toFixed(2) : bag.price}</span>
                     </span>
-                    <span class="face back" ${bag.altitude ? (Array.isArray(bag.altitude) ? `style="--alt: ${(bag.altitude[0] + bag.altitude[1]) * 100 / 6000}%"` :  `style="--alt: ${bag.altitude * 100 / 3000}%"`) : ''}>
-                      <span class="from">${bag.region ? bag.region : ''}</span>
-                      <span class="alt">${bag.altitude ? (Array.isArray(bag.altitude) ? `${bag.altitude[0]}-${bag.altitude[1]} masl` :  `${bag.altitude} masl`) : ''}</span>
+                    <span class="face back"
+                      ${
+                        bag.altitude
+                          ? `style="--alt: ${
+                              ((bag.altitude[0] + (bag.altitude[1] ?? bag.altitude[0])) / 2) *
+                              100 /
+                              3000
+                            }%"`
+                          : ''
+                      }
+                      >
+                      <span class="from">${bag.region || ''}</span>
+                      <span class="alt">
+                        ${
+                          bag.altitude
+                            ? `${bag.altitude.join('-')} masl`
+                            : ''
+                        }
+                      </span>
                     </span>
                     <span class="face right"></span>
                     <span class="face left"></span>

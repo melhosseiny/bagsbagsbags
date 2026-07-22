@@ -74,12 +74,13 @@ const get_diff_summary = async () => {
     },
     cache: "no-store",
   })).json();
+
   const last_commit_sha = data_file_commits[0].sha
 //  const last_commit_sha = "8503bedb89cdd3d6b6aba3343ae6dc0fc5e5d2d9";
   console.log(last_commit_sha);
   const raw_diff = await( await fetch(`https://github.com/melhosseiny/bagsbagsbags/commit/${last_commit_sha}.diff`)).text()
   console.log(raw_diff);
-  const result = await gemini(`Given the raw git diff ${raw_diff}, briefly list all new coffees. Id change doesn't mean it's a new coffee. Ignore other minor changes like price, process, and notes. Format answer as JSON { new_coffees: , summary: }. new_coffees should be an array of new coffee ids, while summary should very briefly highlight new coffees stating varietal, origin and roaster and be suitable for a social media post titled today's new coffees. Don't wrap in code block`, true)
+  const result = await gemini(`Given the raw git diff ${raw_diff}, briefly list all new coffees. Id change doesn't mean it's a new coffee. Ignore other minor changes like price, process, and notes. Format answer as JSON { new_coffees: , summary: }. new_coffees should be an array of new coffee ids, while summary should very briefly highlight new coffees stating varietal, origin and roaster and be suitable for a social media post titled today's new coffees. Don't wrap in code block`)
   console.log(result);
   return result;
 }

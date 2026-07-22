@@ -1,11 +1,11 @@
 {
   "tasks": {
-    "run": "deno run --unstable-cron --allow-env --allow-net --allow-read --allow-write mod.js",
-    "index": "deno run --allow-env --allow-net --allow-read --allow-write mod/mod_index.js",
+    "run": "deno run --unstable-cron --allow-env --env-file --allow-net --allow-read --allow-write mod.js",
+    "index": "deno run --allow-env --env-file --allow-net --allow-read --allow-write mod/mod_index.js",
     "critical": "deno run --allow-net --allow-env --allow-run --allow-read --allow-write https://raw.githubusercontent.com/melhosseiny/critical/main/mod.js index.html"
   },
   "imports": {
     "media_types": "https://raw.githubusercontent.com/melhosseiny/git-fetch/main/media_types.js",
-    "@google/generative-ai": "https://esm.run/@google/generative-ai"
+    "@google/genai": "npm:@google/genai"
   }
 }
