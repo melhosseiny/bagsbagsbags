@@ -1,4 +1,3 @@
-import { serve } from "https://deno.land/std@0.170.0/http/server.ts";
 import * as base64 from "https://deno.land/std@0.170.0/encoding/base64.ts";
 import { content_type } from "media_types";
 
@@ -85,7 +84,7 @@ const get_diff_summary = async () => {
   return result;
 }
 
-serve(async (request) => {
+Deno.serve(async (request) => {
   let { pathname, searchParams } = new URL(request.url);
 
   let response_body;

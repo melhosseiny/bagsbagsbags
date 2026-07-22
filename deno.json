@@ -7,10 +7,5 @@
   "imports": {
     "media_types": "https://raw.githubusercontent.com/melhosseiny/git-fetch/main/media_types.js",
     "@google/genai": "npm:@google/genai"
-  },
-  "nodeModulesDir": "auto",
-  "allowScripts": [
-    "npm:@google/genai",
-    "npm:protobufjs"
-  ]
+  }
 }
