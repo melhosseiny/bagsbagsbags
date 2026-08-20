@@ -3,7 +3,7 @@ import {
   html,
   state,
   web_component,
-} from "https://busy-dog-44.deno.dev/melhosseiny/sourdough/main/sourdough.js";
+} from "flare";
 
 const template = (data) =>
   html`
@@ -18,7 +18,7 @@ const style = `
 export function summary(spec) {
   let { _root } = spec;
   const _web_component = web_component(spec);
-  const _state = _web_component.state;
+  const _state = state(spec);
 
   const fetch_summary = async () => {
     _state.summary = undefined;

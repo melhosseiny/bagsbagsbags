@@ -1,4 +1,4 @@
-import { installRouter } from "https://busy-dog-44.deno.dev/melhosseiny/sourdough/main/router.js";
+import { installRouter } from "router";
 
 const to_title_case = function(s) {
   return s.replace(/-/g, ' ')[0].toUpperCase() +
@@ -20,11 +20,11 @@ const handle_nav = function(location) {
 const load_page = async function(page) {
   switch(page) {
     case "index":
-      document.title = "bagsbagsbags";
+      document.title = "bbb";
       document.querySelector("#main").innerHTML = `<bbb-market></bbb-market>`;
       break;
     default:
-      const title = `${to_title_case(page)} - bagsbagsbags`;
+      const title = `${to_title_case(page)} - bbb`;
       document.title = title;
       document.querySelector("#main").innerHTML = `<bbb-empty></bbb-empty>`;
   }

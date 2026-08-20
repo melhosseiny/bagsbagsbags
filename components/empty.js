@@ -1,4 +1,4 @@
-import { html, state, web_component, define_component } from "https://busy-dog-44.deno.dev/melhosseiny/sourdough/main/sourdough.js";
+import { html, state, web_component, define_component } from "flare";
 
 const template = (data) => html`
   <div id="empty">
@@ -26,7 +26,7 @@ const style = `
 export function empty(spec) {
   let { _root } = spec;
   const _web_component = web_component(spec);
-  const _state = _web_component.state;
+  const _state = state(spec);
 
   const init = () => {
   }

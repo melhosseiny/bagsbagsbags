@@ -2,7 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 import { load } from "https://deno.land/std@0.224.0/dotenv/mod.ts";
 import {
   DOMParser,
-} from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
+} from "@b-fuze/deno-dom";
 
 const env = await load();
 
@@ -75,6 +75,54 @@ export const gemini_struct = async (
 
 export const hold_on = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
+export const scrape_html = async (url_str) => {
+  const url = new URL(url_str);
+
+  const response = await fetch(url, {
+    cache: "no-store"
+  });
+  
+  const html = await response.text();
+  
+  if (
+    response.status === 429 ||
+    html.includes("local_rate_limited")
+  ) {
+    throw new Error("RATE_LIMITED");
+  }
+
+  return html;
+}
+
+export const scrape_html_with_retry = async (
+  url,
+  max_attempts = 30,
+) => {
+  for (let attempt = 1; attempt <= max_attempts; attempt++) {
+    try {
+      return await scrape_html(url);
+    } catch (error) {
+      const rate_limited =
+        error instanceof Error &&
+        error.message === "RATE_LIMITED";
+
+      if (!rate_limited || attempt === max_attempts) {
+        throw error;
+      }
+
+      const delay_ms = 2000 * 2 ** (attempt - 1);
+
+      console.warn(
+        `Rate limited. Retry ${attempt}/${max_attempts} in ${delay_ms} ms.`,
+      );
+
+      await hold_on(delay_ms);
+    }
+  }
+
+  throw new Error("Scrape failed unexpectedly.");
 };
 
 export const clean_html = (html) => {

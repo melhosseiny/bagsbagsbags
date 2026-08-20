@@ -1,27 +1,27 @@
 @font-face {
   font-family: "SF Pro Display";
-  src: url('https://early-fox-61.deno.dev/sf-pro-display_regular.woff2') format('woff2');
+  src: url('https://font.drom.deno.net/sf-pro-display_regular.woff2') format('woff2');
   font-weight: normal;
   font-display: fallback;
 }
 
 @font-face {
   font-family: "SF Pro Display";
-  src: url('https://early-fox-61.deno.dev/sf-pro-display_bold.woff2') format('woff2');
+  src: url('https://font.drom.deno.net/sf-pro-display_bold.woff2') format('woff2');
   font-weight: bold;
   font-display: fallback;
 }
 
 @font-face {
   font-family: "SF Pro Text";
-  src: url('https://early-fox-61.deno.dev/sf-pro-text_light.woff2') format('woff2');
+  src: url('https://font.drom.deno.net/sf-pro-text_light.woff2') format('woff2');
   font-weight: 300;
   font-display: fallback;
 }
 
 @font-face {
   font-family: "SF Pro Text";
-  src: url('https://early-fox-61.deno.dev/sf-pro-text_regular.woff2') format('woff2-variations');
+  src: url('https://font.drom.deno.net/sf-pro-text_regular.woff2') format('woff2-variations');
   font-weight: 100 1000;
   font-stretch: 25% 151%;
   font-display: fallback;
@@ -29,21 +29,21 @@
 
 @font-face {
   font-family: "SF Pro Text";
-  src: url('https://early-fox-61.deno.dev/sf-pro-text_bold.woff2') format('woff2');
+  src: url('https://font.drom.deno.net/sf-pro-text_bold.woff2') format('woff2');
   font-weight: bold;
   font-display: fallback;
 }
 
 @font-face {
   font-family: "SF Mono";
-  src: url('https://early-fox-61.deno.dev/sf-mono_regular.woff') format('woff');
+  src: url('https://font.drom.deno.net/sf-mono_regular.woff') format('woff');
   font-weight: normal;
   font-display: fallback;
 }
 
 @font-face {
   font-family: "SF Mono";
-  src: url('https://early-fox-61.deno.dev/sf-mono_bold.woff') format('woff');
+  src: url('https://font.drom.deno.net/sf-mono_bold.woff') format('woff');
   font-weight: bold;
   font-display: fallback;
 }

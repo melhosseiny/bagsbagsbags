@@ -1,5 +1,5 @@
 import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
-import { gemini, gemini_struct, hold_on, clean_html, LINKS_SCHEMA, BAG_SCHEMA } from "./mod_ai.js";
+import { gemini, gemini_struct, hold_on, scrape_html_with_retry, clean_html, LINKS_SCHEMA, BAG_SCHEMA } from "./mod_ai.js";
 
 const parser = new DOMParser();
 
@@ -7,7 +7,7 @@ const HOST = "https://www.fuglencoffee.no";
 
 // fuglen no
 export async function sync_fuglen() {
-  const fuglen_links_html = await (await fetch(`${HOST}/collections/coffee`)).text();
+  const fuglen_links_html = await scrape_html_with_retry(`${HOST}/collections/coffee`);
   const fuglen_links_doc_body_html = clean_html(fuglen_links_html);;
   
   console.log(fuglen_links_doc_body_html);
@@ -21,7 +21,7 @@ export async function sync_fuglen() {
   for (const [index, value] of links_json.entries()) {
     await hold_on(30000); // for rate limit
 
-    const fuglen_coffee_html = await (await fetch(value.link)).text();
+    const fuglen_coffee_html = await scrape_html_with_retry(value.link);
     const fuglen_coffee_doc_body_html = clean_html(fuglen_coffee_html);
 
     const coffee = await gemini_struct(`Extract coffee info from ${fuglen_coffee_doc_body_html}. Harvest date if provided would be (e.g. December 2024 or May - June 2025).`, BAG_SCHEMA);
